@@ -3,9 +3,9 @@
 EEG artifact correction using FASTER
 ====================================
 
-In this example, a variety of metrics are use to detect channels, epochs and
-ICA components that contain artifacts. Rejection and interpolation are used to
-clean the EEG data.
+In this example, a variety of metrics are use to detect channels and epochs
+that contain artifacts. Rejection and interpolation are used to clean the EEG
+data.
 
 References
 ----------
@@ -16,7 +16,7 @@ References
 import mne
 from mne import io
 from mne.preprocessing import (find_bad_channels, find_bad_epochs,
-                               find_bad_channels_in_epochs, ICA)
+                               find_bad_channels_in_epochs)
 from mne.datasets import sample
 
 # Load raw data
@@ -24,7 +24,7 @@ data_path = sample.data_path()
 raw_fname = data_path + '/MEG/sample/sample_audvis_filt-0-40_raw.fif'
 event_fname = data_path + '/MEG/sample/sample_audvis_filt-0-40_raw-eve.fif'
 
-raw = io.Raw(raw_fname, preload=True)
+raw = io.read_raw_fif(raw_fname, preload=True)
 raw.info['bads'] = []  # bads are going to be detected automatically
 events = mne.read_events(event_fname)
 
@@ -42,11 +42,10 @@ raw, _ = io.set_eeg_reference(raw, [])
 picks = mne.pick_types(raw.info, eeg=True, eog=True)
 raw.filter(0.3, None, method='iir', picks=picks)
 
-# Construct epochs
+# Construct epochs. Note that we also include EOG channels.
 event_ids = {'AudL': 1, 'AudR': 2, 'VisL': 3, 'VisR': 4}
 tmin = -0.2
 tmax = 0.5
-picks = mne.pick_types(raw.info, eeg=True, eog=True)
 epochs = mne.Epochs(raw, events, event_ids, tmin, tmax, baseline=(None, 0),
                     preload=True, picks=picks)
 
@@ -73,10 +72,10 @@ if len(bad_epochs) > 0:
 bad_channels_per_epoch = find_bad_channels_in_epochs(epochs)
 for i, b in enumerate(bad_channels_per_epoch):
     if len(b) > 0:
-        epoch = epochs[i]
-        epoch.info['bads'] = b
-        epoch.interpolate_bads() 
-        epochs._data[i, :, :] = epoch._data[0, :, :]
+        ep = epochs[i]
+        ep.info['bads'] = b
+        ep.interpolate_bads() 
+        ep._data[i, :, :] = ep._data[0, :, :]
 
 # Compute evoked after cleaning, using an average EEG reference
 epochs, _ = io.set_eeg_reference(epochs)

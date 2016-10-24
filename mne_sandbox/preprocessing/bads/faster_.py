@@ -155,9 +155,11 @@ def _deviation(data):
 
 
 def _find_bad_channels(epochs, picks, use_metrics, thresh, max_iter):
-    """Implements the first step of the FASTER algorithm.
+    """Automatically find and mark bad channels.
+    
+    Implements the first step of the FASTER algorithm.
 
-    This function attempts to automatically mark bad EEG channels by performing
+    This function attempts to automatically mark bad channels by performing
     outlier detection. It operated on epoched data, to make sure only relevant
     data is analyzed.
 
@@ -210,7 +212,9 @@ def _find_bad_channels(epochs, picks, use_metrics, thresh, max_iter):
 
 
 def _find_bad_epochs(epochs, picks, use_metrics, thresh, max_iter):
-    """Implements the second step of the FASTER algorithm.
+    """Automatically find and mark bad epochs.
+    
+    Implements the second step of the FASTER algorithm.
 
     This function attempts to automatically mark bad epochs by performing
     outlier detection.
@@ -254,9 +258,11 @@ def _find_bad_epochs(epochs, picks, use_metrics, thresh, max_iter):
 
 
 def _find_bad_channels_in_epochs(epochs, picks, use_metrics, thresh, max_iter):
-    """Implements the fourth step of the FASTER algorithm.
+    """Automatically find and mark bad channels in each epoch.
+    
+    Implements the fourth step of the FASTER algorithm.
 
-    This function attempts to automatically mark bad channels in each epochs by
+    This function attempts to automatically mark bad channels in each epoch by
     performing outlier detection.
 
     Additional Parameters
