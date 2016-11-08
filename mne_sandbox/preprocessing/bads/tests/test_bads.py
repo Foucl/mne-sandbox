@@ -10,7 +10,7 @@ from mne_sandbox.preprocessing.bads import (find_bad_channels, find_bad_epochs,
 
 # Signal properties used in the tests
 length = 2  # in seconds
-srate = 200. # in Hertz
+srate = 200.  # in Hertz
 n_channels = 32
 n_epochs = 100
 n_samples = int(length * srate)
@@ -53,11 +53,11 @@ def test_freqs_power():
 
     # These frequencies should be present
     for f in freqs:
-        assert_almost_equal(_freqs_power(signal, srate, [f]), 3 + 1/3.)
+        assert_almost_equal(_freqs_power(signal, srate, [f]), 3 + 1 / 3.)
 
     # The function should sum the individual frequency  powers
     assert_almost_equal(_freqs_power(signal, srate, freqs),
-                        len(freqs) * (3 + 1/3.))
+                        len(freqs) * (3 + 1 / 3.))
 
     # These frequencies should not be present
     assert_almost_equal(_freqs_power(signal, srate, [2, 4, 13, 23, 35]), 0)
@@ -210,7 +210,7 @@ def test_distance_correction():
 
     # Add extra noise to channel 5 for epoch 3
     epochs._data[3, 5, :] *= 5
-    
+
     # Without distance correction, channel 3 is not marked as bad
     bads = find_bad_channels(
         epochs,
