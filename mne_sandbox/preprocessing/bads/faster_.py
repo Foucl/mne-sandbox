@@ -154,7 +154,7 @@ def _deviation(data):
     return ch_mean - np.mean(ch_mean, axis=0)
 
 
-def _find_bad_channels(epochs, picks, use_metrics, thresh, max_iter):
+def _find_bad_channels(epochs, picks, use_metrics, thresh, max_iter, eeg_ref):
     """Automatically find and mark bad channels.
     
     Implements the first step of the FASTER algorithm.
@@ -175,6 +175,13 @@ def _find_bad_channels(epochs, picks, use_metrics, thresh, max_iter):
     max_iter : int
         The maximum number of iterations performed during outlier detection
         (defaults to 1, as in the original FASTER paper).
+    eeg_ref : str | None
+        If the EEG data has been referenced using a single electrode, specify
+        the name of the reference channel here. This will enable a correction
+        factor for the distance of each electrode to the reference. If an
+        average reference is applied, or the mean of multiple reference
+        electrodes, set this parameter to `None`. Defaults to `None`, which
+        disables the correction.
     """
     from scipy.stats import kurtosis
     metrics = {
@@ -303,6 +310,8 @@ def _find_bad_channels_in_epochs(epochs, picks, use_metrics, thresh, max_iter):
                         % ch_type.upper())
             s_epochs = metrics[metric](data[:, chs])
             for i_epochs, epoch in enumerate(s_epochs):
+                if metric == 'line_noise':
+                    print i_epochs, epoch
                 outliers = find_outliers(epoch, thresh, max_iter)
                 if len(outliers) > 0:
                     bad_segment = [ch_names[k] for k in outliers]

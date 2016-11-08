@@ -1,13 +1,12 @@
 import numpy as np
-import mne
-
 from nose.tools import (assert_true, assert_almost_equal,
                         assert_raises, assert_equal)
 from numpy.testing import (assert_allclose)
+import mne
 
-from mne.preprocessing.bads.faster_ import (_hurst, _freqs_power)
-from mne.preprocessing.bads import (find_bad_channels, find_bad_epochs,
-                                    find_bad_channels_in_epochs)
+from mne_sandbox.preprocessing.bads.faster_ import (_hurst, _freqs_power)
+from mne_sandbox.preprocessing.bads import (find_bad_channels, find_bad_epochs,
+                                            find_bad_channels_in_epochs)
 
 # Signal properties used in the tests
 length = 2  # in seconds
