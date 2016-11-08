@@ -186,3 +186,55 @@ def test_find_bad_channels_in_epochs():
     assert_equal(bads['amplitude'][2], [])
     assert_equal(bads['median_gradient'][0], [])
     assert_equal(bads['line_noise'][3], ['3'])
+
+
+def test_distance_correction():
+    """Test correcting for the distance of each electrode to the reference"""
+    signal, noise = _baseline_signal()
+    epochs = _to_epochs(signal, noise)
+    for ch in range(32):
+        # Set electrode position and reference position
+        epochs.info['chs'][ch]['loc'] = [
+            np.sin(ch * np.pi / 32.),  # x
+            np.cos(ch * np.pi / 32.),  # y
+            0.,  # z
+            0., 1., 0.  # x,y,z for reference electrode
+        ]
+
+        # Make the signal amplitude increase with the distance to the sensor.
+        # This is not noise, but a natural phenomenon.
+        epochs._data[:, ch, :] *= ch
+
+    # Add extra noise to channel 3 for all epochs
+    epochs._data[:, 3, :] *= 5
+
+    # Add extra noise to channel 5 for epoch 3
+    epochs._data[3, 5, :] *= 5
+    
+    # Without distance correction, channel 3 is not marked as bad
+    bads = find_bad_channels(
+        epochs,
+        method_params={'eeg_ref_corr': False, 'use_metrics': ['variance']},
+    )
+    assert_equal(bads, [])
+
+    # With distance correction, channel 3 is correctly found
+    bads = find_bad_channels(
+        epochs,
+        method_params={'eeg_ref_corr': True, 'use_metrics': ['variance']},
+    )
+    assert_equal(bads, ['3'])
+
+    # Without distance correction, channel 5 is not marked as bad in epoch 3
+    bads = find_bad_channels_in_epochs(
+        epochs,
+        method_params={'eeg_ref_corr': False, 'use_metrics': ['variance']},
+    )
+    assert_equal(bads[3], [])
+
+    # With distance correction, channel 5 is correctly found in epoch 3
+    bads = find_bad_channels_in_epochs(
+        epochs,
+        method_params={'eeg_ref_corr': True, 'use_metrics': ['variance']},
+    )
+    assert_equal(bads[3], ['5'])

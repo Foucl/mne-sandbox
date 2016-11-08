@@ -43,13 +43,12 @@ def find_bad_channels(epochs, picks=None, method='faster', method_params=None,
         max_iter : int
             The maximum number of iterations performed during outlier detection
             (defaults to 1, as in the original FASTER paper).
-        eeg_ref : str | None
-            If the EEG data has been referenced using a single electrode,
-            specify the name of the reference channel here. This will enable a
-            correction factor for the distance of each electrode to the
-            reference. If an average reference is applied, or the mean of
-            multiple reference electrodes, set this parameter to None. Defaults
-            to None, which disables the correction.
+        eeg_ref_corr : bool
+            If the EEG data has been referenced using a single electrode setting
+            this parameter to True will enable a correction factor for the distance
+            of each electrode to the reference. If an average reference is applied,
+            or the mean of multiple reference electrodes, set this parameter to
+            False. Defaults to False, which disables the correction.
 
     return_by_metric : bool
         Whether to return the bad channels as a flat list (False, default) or
@@ -197,6 +196,12 @@ def find_bad_channels_in_epochs(epochs, picks=None, method='faster',
         max_iter : int
             The maximum number of iterations performed during outlier detection
             (defaults to 1, as in the original FASTER paper).
+        eeg_ref_corr : bool
+            If the EEG data has been referenced using a single electrode setting
+            this parameter to True will enable a correction factor for the distance
+            of each electrode to the reference. If an average reference is applied,
+            or the mean of multiple reference electrodes, set this parameter to
+            False. Defaults to False, which disables the correction.
 
     return_by_metric : bool
         Whether to return the bad channels as a flat list (False, default) or
