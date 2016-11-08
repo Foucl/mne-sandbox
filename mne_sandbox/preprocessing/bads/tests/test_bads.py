@@ -162,7 +162,7 @@ def test_find_bad_channels_in_epochs():
     signal[1, 1, :] += 20
 
     # This channel/epoch combination has a single spike
-    signal[2, 2, 0] += 10
+    signal[2, 2, 0] += 100
 
     # This channel/epoch combination has excessive 50 Hz line noise
     signal[3, 3, :] += np.sin(50 * 2 * np.pi * time)
