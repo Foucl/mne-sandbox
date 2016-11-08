@@ -13,11 +13,12 @@ from . import faster_ as _faster
 @verbose
 def find_bad_channels(epochs, picks=None, method='faster', method_params=None,
                       return_by_metric=False, verbose=None):
-    """Implements the first step of the FASTER algorithm.
+    """Automatically find and mark bad channels.
 
-    This function attempts to automatically mark bad EEG channels by performing
-    outlier detection. It operated on epoched data, to make sure only relevant
-    data is analyzed.
+    This function attempts to automatically mark bad EEG channels. Currently,
+    the only supported method is the FASTER algorithm [1], but more methods
+    will be added in the future. It operates on epoched data, to make sure only
+    relevant data is analyzed.
 
     Parameters
     ----------
@@ -63,6 +64,17 @@ def find_bad_channels(epochs, picks=None, method='faster', method_params=None,
     -------
     bads : list of str
         The names of the bad EEG channels.
+
+    See Also
+    --------
+    find_bad_epochs
+    find_bad_channels_in_epochs
+
+    References
+    ----------
+    [1] H., Whelan R. and Reilly RB. FASTER: fully automated statistical
+    thresholding for EEG artifact rejection. Journal of Neuroscience Methods,
+    vol. 192, issue 1, pp. 152-162, 2010.
     """
     if picks is None:
         picks = pick_types(epochs.info, meg=True, eeg=True, exclude=[])
@@ -82,10 +94,12 @@ def find_bad_channels(epochs, picks=None, method='faster', method_params=None,
 @verbose
 def find_bad_epochs(epochs, picks=None, return_by_metric=False,
                     method='faster', method_params=None, verbose=None):
-    """Implements the second step of the FASTER algorithm.
+    """Automatically find and mark bad epochs.
 
-    This function attempts to automatically mark bad epochs by performing
-    outlier detection.
+    This function attempts to automatically mark bad epochs. Currently, the
+    only supported method is the FASTER algorithm [1], but more methods will be
+    added in the future. It operates on epoched data, to make sure only
+    relevant data is analyzed.
 
     Parameters
     ----------
@@ -123,6 +137,17 @@ def find_bad_epochs(epochs, picks=None, return_by_metric=False,
     -------
     bads : list of int
         The indices of the bad epochs.
+
+    See Also
+    --------
+    find_bad_channels
+    find_bad_channels_in_epochs
+
+    References
+    ----------
+    [1] H., Whelan R. and Reilly RB. FASTER: fully automated statistical
+    thresholding for EEG artifact rejection. Journal of Neuroscience Methods,
+    vol. 192, issue 1, pp. 152-162, 2010.
     """
     if picks is None:
         picks = pick_types(epochs.info, meg=True, eeg=True, exclude='bads')
@@ -142,10 +167,12 @@ def find_bad_epochs(epochs, picks=None, return_by_metric=False,
 @verbose
 def find_bad_channels_in_epochs(epochs, picks=None, method='faster',
                                 method_params=None, return_by_metric=False):
-    """Implements the fourth step of the FASTER algorithm.
+    """Automatically find and mark bad channels in each epoch.
 
-    This function attempts to automatically mark bad channels in each epochs by
-    performing outlier detection.
+    This function attempts to automatically mark bad channels in each epochs.
+    Currently, the only supported method is the FASTER algorithm [1], but more
+    methods will be added in the future. It operates on epoched data, to make
+    sure only relevant data is analyzed.
 
     Parameters
     ----------
@@ -181,6 +208,17 @@ def find_bad_channels_in_epochs(epochs, picks=None, method='faster',
     -------
     bads : list of lists of int
         For each epoch, the indices of the bad channels.
+
+    See Also
+    --------
+    find_bad_channels
+    find_bad_epochs
+
+    References
+    ----------
+    [1] H., Whelan R. and Reilly RB. FASTER: fully automated statistical
+    thresholding for EEG artifact rejection. Journal of Neuroscience Methods,
+    vol. 192, issue 1, pp. 152-162, 2010.
     """
     if picks is None:
         picks = pick_types(epochs.info, meg=True, eeg=True, exclude=[])

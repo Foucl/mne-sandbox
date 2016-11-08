@@ -160,7 +160,7 @@ def _find_bad_channels(epochs, picks, use_metrics, thresh, max_iter, eeg_ref):
     Implements the first step of the FASTER algorithm.
 
     This function attempts to automatically mark bad channels by performing
-    outlier detection. It operated on epoched data, to make sure only relevant
+    outlier detection. It operates on epoched data, to make sure only relevant
     data is analyzed.
 
     Additional Parameters
