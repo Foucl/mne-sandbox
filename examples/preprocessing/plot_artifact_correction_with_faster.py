@@ -60,9 +60,9 @@ evoked_before = epochs_before.average()
 ###############################################################################
 # Clean the data using FASTER
 
-method_params = dict(eeg_ref_corr = True)
 # Step 1: mark bad channels
-epochs.info['bads'] = find_bad_channels(epochs, method_params=method_params)
+epochs.info['bads'] = find_bad_channels(epochs,
+                                        method_params={'eeg_ref_corr': True})
 if len(epochs.info['bads']) > 0:
     epochs.interpolate_bads()
 
@@ -72,8 +72,8 @@ if len(bad_epochs) > 0:
     epochs.drop(bad_epochs)
 
 # Step 3: mark bad channels for each epoch and interpolate them.
-bad_channels_per_epoch = find_bad_channels_in_epochs(epochs,
-                                                     method_params=method_params)
+bad_channels_per_epoch = find_bad_channels_in_epochs(
+    epochs, method_params={'eeg_ref_corr': True})
 for i, b in enumerate(bad_channels_per_epoch):
     if len(b) > 0:
         ep = epochs[i]
