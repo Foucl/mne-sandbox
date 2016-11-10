@@ -246,7 +246,7 @@ def find_bad_channels_in_epochs(epochs, picks=None, method='faster',
     if return_by_metric:
         bads = dict((m, _bad_mask_to_names(info, v)) for m, v in bads.items())
     else:
-        bads = np.sum(bads.values(), axis=0).astype(bool)
+        bads = np.sum(list(bads.values()), axis=0).astype(bool)
         bads = _bad_mask_to_names(info, bads)
 
     return bads
