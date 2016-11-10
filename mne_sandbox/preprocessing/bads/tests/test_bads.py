@@ -1,7 +1,6 @@
 import numpy as np
-from nose.tools import (assert_true, assert_almost_equal,
-                        assert_raises, assert_equal)
-from numpy.testing import (assert_allclose)
+from nose.tools import (assert_true, assert_raises, assert_equal)
+from numpy.testing import (assert_allclose, assert_almost_equal)
 import mne
 
 from mne_sandbox.preprocessing.bads.faster_ import (_hurst, _freqs_power)
