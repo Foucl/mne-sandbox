@@ -3,7 +3,7 @@
 EEG artifact correction using FASTER
 ====================================
 
-In this example, a variety of metrics are use to detect channels and epochs
+In this example, a variety of metrics are used to detect channels and epochs
 that contain artifacts. Rejection and interpolation are used to clean the EEG
 data.
 
